@@ -13,6 +13,7 @@ return {
   {
     'terlim/IECST_LANG_SUPPORT',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    -- Без ft= — plugin/iecst.vim должен загрузиться до :TSInstall
     ft = { 'iecst', 'st' },
     config = function()
       require('iecst').setup()
