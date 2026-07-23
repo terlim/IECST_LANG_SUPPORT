@@ -31,7 +31,11 @@ function M.setup(user_opts)
   -- 1.  Filetype detection (.st, .ST, .iecst, .IECST)
   require('iecst.filetype').setup()
 
-  -- 2.  Copy pre-built parser to Neovim's parser directory
+  -- 2.  Register parser with nvim-treesitter so :TSInstall iecst works
+  --     (must happen unconditionally, even before parser .so exists)
+  require('iecst.treesitter').setup(config)
+
+  -- 3.  Copy pre-built parser to Neovim's parser directory
   local dest = expand('~/.local/share/nvim/tree-sitter/iecst.so')
   if vim.fn.filereadable(dest) ~= 1 then
     local src = expand('~/.local/share/nvim-iecst/tree-sitter-iecst/iecst.so')
