@@ -1,0 +1,67 @@
+*iecst.txt*  IECST (IEC 61131-3 Structured Text) support for Neovim
+
+==============================================================================
+CONTENTS                                                *iecst-contents*
+
+1. Introduction .................. |iecst-intro|
+2. Installation .................. |iecst-install|
+3. Commands ...................... |iecst-commands|
+
+==============================================================================
+1. INTRODUCTION                                        *iecst-intro*
+
+IECST provides syntax highlighting, folding, indentation, and code
+navigation for IEC 61131-3 Structured Text (CODESYS dialect) files
+in Neovim using tree-sitter.
+
+Supported features:
+
+  - Full IEC 61131-3:2013 syntax (PROGRAM, FUNCTION, FUNCTION_BLOCK, etc.)
+  - CODESYS extensions: VERSION type, attribute pragmas, PERSISTENT
+  - Syntax highlighting through nvim-treesitter
+  - Code folding
+  - Auto-indentation
+  - Go-to-definition (locals.scm)
+  - Code navigation tags (tags.scm)
+
+File extensions detected: `.st`, `.ST`, `.iecst`, `.IECST`
+
+==============================================================================
+2. INSTALLATION                                        *iecst-install*
+
+REQUIREMENTS:
+
+  - Neovim >= 0.9
+  - nvim-treesitter (https://github.com/nvim-treesitter/nvim-treesitter)
+
+WITH LAZY.NVIM:
+
+>
+  {
+    'your-namespace/nvim-iecst',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    ft = { 'iecst', 'st' },
+    config = function()
+      require('iecst').setup()
+    end,
+  }
+<
+
+MANUAL:
+
+Copy the plugin to your runtimepath and add to your init.lua:
+
+>
+  require('iecst').setup()
+<
+
+==============================================================================
+3. COMMANDS                                            *iecst-commands*
+
+:IECSTSetup
+      Calls `require('iecst').setup()` with default settings.
+
+For parser installation run `:TSInstall iecst` after setup.
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:

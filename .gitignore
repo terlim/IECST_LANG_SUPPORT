@@ -1,0 +1,6 @@
+*.so
+*.wasm
+*.node
+.DS_Store
+*.swp
+*.swo
