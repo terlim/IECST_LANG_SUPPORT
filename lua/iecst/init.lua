@@ -35,7 +35,7 @@ function M.setup(user_opts)
   local dest = expand('~/.local/share/nvim/tree-sitter/iecst.so')
   if vim.fn.filereadable(dest) ~= 1 then
     -- Try bundled .so first (ships with plugin)
-    local bundled = expand(vim.fn.stdpath('data') .. '/lazy/IECST_LANG_SUPPORT/iecst.so')
+    local bundled = expand(vim.fn.fnamemodify(debug.getinfo(1, 'S').source:sub(2), ':h:h:h') .. '/iecst.so')
     if vim.fn.filereadable(bundled) == 1 then
       vim.fn.mkdir(vim.fn.fnamemodify(dest, ':h'), 'p')
       vim.loop.fs_copyfile(bundled, dest)
