@@ -1,8 +1,8 @@
 " nvim-iecst/plugin/iecst.vim
-" Bootstrap: expose Lua module + register parser with nvim-treesitter.
+" Bootstrap: expose Lua module + register filetype patterns.
 "
-" This file is sourced once when Neovim scans `plugin/` at startup.
-" Parser MUST be registered here so :TSInstall knows the grammar URL.
+" Filetype patterns MUST be set at startup (not in config()) so .st
+" files are detected as 'iecst' before lazy.nvim checks ft=.
 
 if exists('g:loaded_iecst')
   finish
@@ -11,4 +11,4 @@ let g:loaded_iecst = 1
 
 command! -bar IECSTSetup lua require('iecst').setup()
 
-lua require('iecst.treesitter').setup(require('iecst.config').defaults)
+lua require('iecst.filetype').setup()

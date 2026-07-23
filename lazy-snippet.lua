@@ -11,9 +11,11 @@ return {
   {
     'terlim/IECST_LANG_SUPPORT',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    ft = { 'iecst', 'st' },
+    -- plugin/iecst.vim регистрирует filetype patterns при старте,
+    -- поэтому ft= здесь не нужен — достаточно навесить config на ft
     config = function()
       require('iecst').setup()
     end,
+    ft = { 'iecst' },
   },
 }
