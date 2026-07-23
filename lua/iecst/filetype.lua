@@ -5,7 +5,7 @@ local M = {}
 
 --- Register filetype detection patterns.
 function M.setup()
-  vim.filetype.add({
+  pcall(vim.filetype.add, {
     extension = {
       st    = 'iecst',
       ST    = 'iecst',
