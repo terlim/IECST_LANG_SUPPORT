@@ -2,8 +2,8 @@
 " Bootstrap: expose Lua module + register parser with nvim-treesitter.
 "
 " This file is sourced once when Neovim scans `plugin/` at startup.
-" Parser registration MUST happen here (before nvim-treesitter loads)
-" so that `:TSInstall iecst` works.
+" Parser registration MUST happen here (before `:TSInstall` is called)
+" so that nvim-treesitter knows where to clone the grammar from.
 
 if exists('g:loaded_iecst')
   finish
@@ -14,38 +14,43 @@ let g:loaded_iecst = 1
 command! -bar IECSTSetup lua require('iecst').setup()
 
 lua << EOF
--- Register the parser with nvim-treesitter so :TSInstall iecst knows
--- where to clone it from. Must happen before nvim-treesitter parses
--- its ensure_installed list.
-local function register_parser()
-  local ok, parsers = pcall(require, 'nvim-treesitter.parsers')
-  if not ok then return end
-
-  local config = require('iecst.config').defaults
-  local parser_def = {
-    install_info = {
-      url      = config.parser.url,
-      branch   = config.parser.branch,
-      files    = { 'src/parser.c', 'src/scanner.c' },
-      generate = config.parser.generate,
-    },
-    filetype = config.parser.filetype,
-  }
-
-  parsers.iecst = parser_def
-  -- Compatibility with older nvim-treesitter:
-  pcall(function()
-    parsers.get_parser_configs().iecst = parser_def
-  end)
-  -- Map parser name to filetype:
-  pcall(vim.treesitter.language.register, 'iecst', { 'iecst' })
-end
-
--- Try immediately (if nvim-treesitter is already loaded)
-register_parser()
--- Also try after VimEnter (if nvim-treesitter loads later)
-vim.api.nvim_create_autocmd('VimEnter', {
+-- Defer registration to when nvim-treesitter triggers its TSUpdate
+-- event. This is the only reliable hook that runs before :TSInstall
+-- checks the parser list.
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'TSUpdate',
   once = true,
-  callback = register_parser,
+  callback = function()
+    local config = require('iecst.config').defaults
+    local parser_def = {
+      install_info = {
+        url      = config.parser.url,
+        branch   = config.parser.branch,
+        files    = { 'src/parser.c', 'src/scanner.c' },
+        generate = config.parser.generate,
+      },
+      filetype = config.parser.filetype,
+    }
+
+    local ok, parsers = pcall(require, 'nvim-treesitter.parsers')
+    if ok then
+      parsers.iecst = parser_def
+      -- Compatibility with older nvim-treesitter:
+      pcall(function()
+        parsers.get_parser_configs().iecst = parser_def
+      end)
+      -- Map parser name -> filetype
+      pcall(vim.treesitter.language.register, 'iecst', { 'iecst' })
+    end
+  end,
 })
+
+-- If nvim-treesitter already loaded, fire now
+vim.schedule(function()
+  pcall(function()
+    if package.loaded['nvim-treesitter'] then
+      vim.cmd('doautocmd User TSUpdate')
+    end
+  end)
+end)
 EOF
