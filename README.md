@@ -33,7 +33,7 @@ IECST_Lang_Support/
 
 ```bash
 curl -fLo ~/.config/nvim/lua/plugins/iecst.lua \
-  https://raw.githubusercontent.com/terlim/nvim-iecst/main/lazy-snippet.lua
+  https://raw.githubusercontent.com/terlim/IECST_LANG_SUPPORT/main/lazy-snippet.lua
 ```
 
 Restart Neovim, open any `.st` file, run `:TSInstall iecst` — done.
@@ -42,7 +42,7 @@ Restart Neovim, open any `.st` file, run `:TSInstall iecst` — done.
 
 ```lua
 {
-  'terlim/nvim-iecst',
+  'terlim/IECST_LANG_SUPPORT',
   dependencies = { 'nvim-treesitter/nvim-treesitter' },
   ft = { 'iecst', 'st' },
   config = function()
@@ -54,7 +54,7 @@ Restart Neovim, open any `.st` file, run `:TSInstall iecst` — done.
 **With auto-install parser:**
 ```lua
 {
-  'terlim/nvim-iecst',
+  'terlim/IECST_LANG_SUPPORT',
   dependencies = {
     {
       'nvim-treesitter/nvim-treesitter',

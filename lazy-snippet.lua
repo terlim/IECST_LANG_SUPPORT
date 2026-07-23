@@ -5,14 +5,14 @@
 --
 -- ИЛИ установи одной командой:
 --   curl -fLo ~/.config/nvim/lua/plugins/iecst.lua \
---     https://raw.githubusercontent.com/terlim/nvim-iecst/main/lazy-snippet.lua
+--     https://raw.githubusercontent.com/terlim/IECST_LANG_SUPPORT/main/lazy-snippet.lua
 --
 -- После установки открой .st файл — подсветка заработает автоматически.
 
 return {
   -- Парсер + подсветка синтаксиса (lazy.nvim сам клонирует репозиторий)
   {
-    'terlim/nvim-iecst',
+    'terlim/IECST_LANG_SUPPORT',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     ft = { 'iecst', 'st' },
     config = function()
@@ -23,7 +23,7 @@ return {
   -- С автоустановкой парсера + предсборкой .so (рекомендуется)
   -- Раскомментируй этот блок если использовал install.sh
   -- {
-  --   'terlim/nvim-iecst',
+  --   'terlim/IECST_LANG_SUPPORT',
   --   dir = vim.fn.expand('~/.local/share/nvim-iecst'),
   --   dependencies = {
   --     {
